@@ -1,7 +1,7 @@
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.types.StructType
 
-object Structure_comparator {
+object StructureComparator {
   def main(args: Array[String]): Unit = {
     if (args.length != 2) {
       println("Использование: HiveTableComparator <database1.table1> <database2.table2>")
