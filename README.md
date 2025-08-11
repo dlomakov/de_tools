@@ -41,7 +41,7 @@
 ---
 
 ### 3. Yarn_api_parser
-Язык: Python (Airflow, Requests, PostgreSQL)  
+Язык: Python (Airflow, Requests)  
 Назначение: Сбор и загрузка статистики о выполнении приложений из YARN API.  
 
 Возможности:
@@ -59,7 +59,7 @@
 ---
 
 ### 4. HDFS_file_clusterization
-Язык: Python (HDFS API)  
+Язык: Python (Pandas)  
 Назначение: Кластеризация файлов в HDFS по размеру.  
 
 Возможности:
@@ -75,4 +75,4 @@
 
 ## 🚀 Установка
 ```bash
-git clone https://github.com/<your-org>/de-tools.git
+git clone https://github.com/dlomakov/de-tools.git
