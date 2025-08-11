@@ -5,7 +5,7 @@ object StructureComparator {
 
   def main(args: Array[String]): Unit = {
     if (args.length != 2) {
-      println("Использование: HiveTableComparator <database1.table1> <database2.table2>")
+      println("Использование: StructureComparator")
       sys.exit(1)
     }
 
@@ -13,7 +13,7 @@ object StructureComparator {
     val table2 = args(1)
 
     val spark = SparkSession.builder()
-      .appName("Hive Table Comparator")
+      .appName("StructureComparator")
       .enableHiveSupport()
       .getOrCreate()
 
@@ -25,26 +25,24 @@ object StructureComparator {
   def compareTables(spark: SparkSession, table1: String, table2: String): Unit = {
     println(s"Сравнение таблиц: $table1 и $table2")
 
-    // Сравнение схем таблиц
+    // Сравнение схем hive таблиц
     val schema1 = spark.table(table1).schema
     val schema2 = spark.table(table2).schema
+    println(s"Сравнение hive таблиц: $table1 и $table2")
     compareSchemas(schema1, schema2)
 
-    // Сравнение партиционных полей
+    // Сравнение полей партицирования
     val partitionCols1 = getPartitionColumns(spark, table1)
     val partitionCols2 = getPartitionColumns(spark, table2)
+    println(s"Сравнение полей партицирования: $table1 и $table2")
     comparePartitionColumns(partitionCols1, partitionCols2)
 
-    // Сравнение значений партиций
-    val partitions1 = getPartitions(spark, table1)
-    val partitions2 = getPartitions(spark, table2)
-    comparePartitions(partitions1, partitions2)
-
     // Сравнение схем Parquet
+    println(s"Сравнение схем parquet-файлов: $table1 и $table2")
     compareParquetSchemas(spark, table1, table2)
   }
 
-  /** Сравнение схем таблиц **/
+  // Сравнение схем таблиц
   def compareSchemas(schema1: StructType, schema2: StructType): Unit = {
     val fields1 = schema1.fields.map(f => f.name.toLowerCase -> f.dataType.typeName).toMap
     val fields2 = schema2.fields.map(f => f.name.toLowerCase -> f.dataType.typeName).toMap
@@ -77,11 +75,11 @@ object StructureComparator {
     }
   }
 
-  /** Корректное получение партиционных колонок **/
+  // Получение партиционных колонок
   def getPartitionColumns(spark: SparkSession, table: String): Map[String, String] = {
     val describeOutput = spark.sql(s"DESCRIBE FORMATTED $table").collect().map(row => (row.getString(0), row.getString(1)))
 
-    // Ищем блок Partition Information
+    // Поиск блока Partition Information
     val partitionStartIndex = describeOutput.indexWhere(_._1.contains("# Partition Information"))
     val dataStartIndex = describeOutput.indexWhere(_._1.contains("# Detailed Table Information"))
 
@@ -89,14 +87,14 @@ object StructureComparator {
       return Map.empty[String, String] // Нет партиций
     }
 
-    // Извлечение партиционных полей
+    // Извлечение полей партицирования
     val partitionFields = describeOutput.slice(partitionStartIndex + 2, dataStartIndex)
     partitionFields.filter { case (colName, dataType) => colName.nonEmpty && dataType.nonEmpty }
       .map { case (colName, dataType) => colName.trim.toLowerCase -> dataType.trim.toLowerCase }
       .toMap
   }
 
-  /** Сравнение партиционных колонок **/
+  // Сравнение полей партицирования
   def comparePartitionColumns(partitions1: Map[String, String], partitions2: Map[String, String]): Unit = {
     val onlyInFirst = partitions1.keySet.diff(partitions2.keySet)
     val onlyInSecond = partitions2.keySet.diff(partitions1.keySet)
@@ -105,53 +103,24 @@ object StructureComparator {
     val differingTypes = commonPartitions.filter(field => partitions1(field) != partitions2(field))
 
     if (onlyInFirst.nonEmpty) {
-      println("Партиционные поля только в первой таблице:")
+      println("Поля партицирования только в первой таблице:")
       onlyInFirst.foreach(field => println(s"$field: ${partitions1(field)}"))
     }
 
     if (onlyInSecond.nonEmpty) {
-      println("Партиционные поля только во второй таблице:")
+      println("Поля партицирования только во второй таблице:")
       onlyInSecond.foreach(field => println(s"$field: ${partitions2(field)}"))
     }
 
     if (differingTypes.nonEmpty) {
-      println("Партиционные поля с разными типами данных:")
+      println("Поля партицирования с разными типами данных:")
       differingTypes.foreach { field =>
         println(s"$field: ${partitions1(field)} (в первой) <> ${partitions2(field)} (во второй)")
       }
     }
 
     if (onlyInFirst.isEmpty && onlyInSecond.isEmpty && differingTypes.isEmpty) {
-      println("Партиционные поля идентичны.")
-    }
-  }
-
-  /** Получение значений партиций **/
-  def getPartitions(spark: SparkSession, table: String): Set[String] = {
-    try {
-      spark.sql(s"SHOW PARTITIONS $table").collect().map(_.getString(0)).toSet
-    } catch {
-      case _: Exception => Set.empty[String] // Если таблица не партиционирована
-    }
-  }
-
-  /** Сравнение значений партиций **/
-  def comparePartitions(partitions1: Set[String], partitions2: Set[String]): Unit = {
-    val onlyInFirst = partitions1.diff(partitions2)
-    val onlyInSecond = partitions2.diff(partitions1)
-
-    if (onlyInFirst.nonEmpty) {
-      println("Партиции только в первой таблице:")
-      onlyInFirst.foreach(println)
-    }
-
-    if (onlyInSecond.nonEmpty) {
-      println("Партиции только во второй таблице:")
-      onlyInSecond.foreach(println)
-    }
-
-    if (onlyInFirst.isEmpty && onlyInSecond.isEmpty) {
-      println("Партиции идентичны.")
+      println("Поля партицирования идентичны.")
     }
   }
 
@@ -168,7 +137,6 @@ object StructureComparator {
     val parquetSchema1 = spark.read.parquet(location1.get).schema
     val parquetSchema2 = spark.read.parquet(location2.get).schema
 
-    println("Сравнение схем Parquet-файлов:")
     compareSchemas(parquetSchema1, parquetSchema2)
   }
 
