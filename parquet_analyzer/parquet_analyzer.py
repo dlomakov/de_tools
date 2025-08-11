@@ -43,7 +43,7 @@ def analyze_parquet_row_groups(file_path):
             compression_efficiency = (compression_efficiency / total_columns) if total_columns > 0 else None
             
             # Добавление метрик столбца
-            row_group_analysis.append({
+            row_groups_analysis.append({
                 "Row Group": i,
                 "Num Rows": num_rows,
                 "Total Size (bytes)": total_size_bytes,
