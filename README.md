@@ -1,6 +1,6 @@
 # de-tools
 
-A collection of utility tools and mini-frameworks for Data Engineering tasks within the Apache Spark and Hadoop ecosystems.
+A collection of utility tools and mini-frameworks for Data Engineering tasks within the Apache Spark and Hadoop ecosystems.\
 Includes tools for analyzing Hive table structures, Parquet file metadata, monitoring resource usage of applications in YARN, and estimating HDFS directory sizes.
 
 ---
@@ -8,67 +8,63 @@ Includes tools for analyzing Hive table structures, Parquet file metadata, monit
 ## 📦 Contents
 
 ### 1. Structure_comparator
-Language: Scala
+Language: Scala\
 Purpose: Compare the schema structures of two tables in a Hadoop/Spark environment.
 
 Features:
 - Launches a SparkSession and compares:
-  1. Hive table schemas.
-  2. Partitioning fields.
-  3. Parquet file schemas in storage.
+  * Hive table schemas.
+  * Partitioning fields.
+  * Parquet file schemas in storage.
 - Great for ensuring compatibility and identifying discrepancies between table versions.
 ---
 
 ### 2. Parquet_analyzer
-Язык: Python (PyArrow, Pandas)  
-Назначение: Анализ метаинформации Parquet-файлов.  
+Language: Python (using PyArrow and Pandas)\
+Purpose: Analyze Parquet file metadata.
 
-Возможности:
-- Обрабатывает указанный Parquet-файл и выводит подробный анализ по каждому row group:
-  - Количество row group.
-  - Общий объём (байты).
-  - Средний размер строки (байты).
-  - Плотность хранения (density).
-  - Количество NULL значений.
-  - Кардинальность (уникальность значений).
-  - Поколоночный анализ в пределах row group:
-    - Эффективность компрессии.
-    - Тип данных и имя поля.
-    - Размер данных.
-    - Доля памяти в пределах row group.
-
+Features:
+- Processes a specified Parquet file and outputs detailed analysis per row group:
+  - Number of row groups.
+  - Total size (in bytes).
+  - Average row size (in bytes).
+  - Storage density.
+  - Count of NULL values.
+  - Cardinality (uniqueness of values).
+  - Column-level analysis within each row group:
+    - Compression efficiency.
+    - Data type and field name.
+    - Data size.
+    - Contribution to memory usage within the row group.
 ---
 
 ### 3. Yarn_api_parser
-Язык: Python (Airflow, Requests)  
-Назначение: Сбор и загрузка статистики о выполнении приложений из YARN API.  
+Language: Python (integrating with Airflow and using requests)\
+Purpose: Collect and load application execution statistics from the YARN API.
 
-Возможности:
-- Airflow DAG, который:
-  1. Запрашивает YARN API через requests.
-  2. Парсит данные об application:
-     - Время работы.
-     - Интегральное потребление ресурсов:
-       - vcores-seconds
-       - memory-mb-seconds
-  3. Записывает данные в PostgreSQL:
-     - На stage слой (append-режим, все новые записи).
-     - В целевую таблицу (последняя версия по application через `row_number()`).
-
+Features - Arflow DAG that:
+1. Queries the YARN API using requests.
+2. Parses application metrics:
+    - Execution time.
+    - Cumulative resource usage:
+        - vcore-seconds.
+        - memory-MB-seconds.
+3. Inserts data into PostgreSQL:
+    - Into a staging area (append-only mode with all new records).
+    - Into a target table (latest record per application, using row_number() logic).
 ---
 
 ### 4. HDFS_size_estimator
-Язык: Python
-Назначение: Подсчет кол-ва файлов в HDFS и оценка размера директории.  
+Language: Python\
+Purpose: Estimate the number of files and directory size in HDFS.
 
-Возможности:
-- Сканирует указанный путь в HDFS.
-- Считает кол-во файлов и подпапок внутри директории.
-- Оценивает занятый объем контента, суммарный объем (с учетом фактора репликации).
-- Полезно для анализа занятого места.
-
+Features:
+- Scans a specified HDFS path.
+- Counts files and subdirectories within the path.
+- Estimates occupied space (factoring in replication).
+- Useful for analyzing storage usage.
 ---
 
-## 🚀 Установка
+## 🚀 Installation
 ```bash
 git clone https://github.com/dlomakov/de-tools.git
