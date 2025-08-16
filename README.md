@@ -58,7 +58,7 @@
 
 ---
 
-### 4. HDFS_directory_size
+### 4. HDFS_size_estimator
 Язык: Python
 Назначение: Подсчет кол-ва файлов в HDFS и оценка размера директории.  
 
