@@ -1,23 +1,22 @@
 # de-tools
 
-Набор вспомогательных утилит и мини-фреймворков для Data Engineer при работе с Apache Spark и Hadoop.  
-Содержит инструменты для анализа структуры данных hive-таблиц, метаинформации parquet-файлов, мониторинга потребления ресурсов application'ами в YARN и объемов директорий HDFS.
+A collection of utility tools and mini-frameworks for Data Engineering tasks within the Apache Spark and Hadoop ecosystems.
+Includes tools for analyzing Hive table structures, Parquet file metadata, monitoring resource usage of applications in YARN, and estimating HDFS directory sizes.
 
 ---
 
-## 📦 Состав
+## 📦 Contents
 
 ### 1. Structure_comparator
-Язык: Scala  
-Назначение: Сравнение структур двух таблиц в экосистеме Hadoop/Spark.  
+Language: Scala
+Purpose: Compare the schema structures of two tables in a Hadoop/Spark environment.
 
-Возможности:
-- Поднимает SparkSession и сравнивает:
-  1. Схемы Hive-таблиц.
-  2. Поля партиционирования.
-  3. Схемы Parquet-файлов в хранилище.
-- Удобен для контроля совместимости и поиска расхождений между версиями таблиц.
-
+Features:
+- Launches a SparkSession and compares:
+  1. Hive table schemas.
+  2. Partitioning fields.
+  3. Parquet file schemas in storage.
+- Great for ensuring compatibility and identifying discrepancies between table versions.
 ---
 
 ### 2. Parquet_analyzer
