@@ -19,7 +19,7 @@ This repo is useful if you:
 
 ---
 
-## 📦 Tools Overview
+## ⚙️ Tools Overview
 
 | Tool | Description |
 |------|------------|
@@ -30,7 +30,7 @@ This repo is useful if you:
 
 ---
 
-## ⚙️ Contents
+## 📦 Contents
 
 ### 1. Structure_comparator
 Language: Scala\
@@ -67,6 +67,12 @@ Features:
     - Data type and field name.
     - Data size.
     - Contribution to memory usage within the row group.
+
+Example use cases
+- storage optimization
+- performance tuning
+- debugging large datasets
+
 ---
 
 ### 3. Yarn_api_parser
@@ -83,6 +89,12 @@ Features - Arflow DAG that:
 3. Inserts data into PostgreSQL:
     - Into a staging area (append-only mode with all new records).
     - Into a target table (latest record per application, using row_number() logic).
+  
+Use cases:
+- cluster monitoring
+- cost analysis
+- performance tracking
+
 ---
 
 ### 4. HDFS_size_estimator
@@ -94,8 +106,14 @@ Features:
 - Counts files and subdirectories within the path.
 - Estimates occupied space (factoring in replication).
 - Useful for analyzing storage usage.
+
+Example:
+```bash
+python hdfs_size_estimator.py /data/path
+
 ---
 
 ## 🚀 Installation
 ```bash
 git clone https://github.com/dlomakov/de-tools.git
+cd de_tools
