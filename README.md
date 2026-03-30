@@ -1,7 +1,11 @@
 # de-tools
 
 A collection of utility tools and mini-frameworks for Data Engineering tasks within the Apache Spark and Hadoop ecosystems.\
-Includes tools for analyzing Hive table structures, Parquet file metadata, monitoring resource usage of applications in YARN, and estimating HDFS directory sizes.
+This repository contains small but useful utilities designed to solve real-world problems:
+- Hive and parquet schema inconsistencies
+- Parquet file metadata analysis
+- YARN application resource usage monitoring
+- HDFS storage estimation
 
 ---
 
