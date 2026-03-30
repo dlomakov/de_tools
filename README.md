@@ -1,4 +1,4 @@
-# de-tools
+# 🔧 de-tools
 
 A collection of utility tools and mini-frameworks for Data Engineering tasks within the Apache Spark and Hadoop ecosystems.\
 This repository contains small but useful utilities designed to solve real-world problems:
@@ -30,7 +30,7 @@ This repo is useful if you:
 
 ---
 
-## 📦 Contents
+## ⚙️ Contents
 
 ### 1. Structure_comparator
 Language: Scala\
@@ -40,8 +40,14 @@ Features:
 - Launches a SparkSession and compares:
   * Hive table schemas.
   * Partitioning fields.
-  * Parquet file schemas in storage.
+  * Physical Parquet file schemas in storage.
 - Great for ensuring compatibility and identifying discrepancies between table versions.
+
+When to use:
+- after schema changes
+- during migrations
+- debugging broken pipelines
+
 ---
 
 ### 2. Parquet_analyzer
