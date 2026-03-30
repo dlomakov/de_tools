@@ -110,6 +110,7 @@ Features:
 Example:
 ```bash
 python hdfs_size_estimator.py /data/path
+```
 
 ---
 
@@ -117,3 +118,4 @@ python hdfs_size_estimator.py /data/path
 ```bash
 git clone https://github.com/dlomakov/de-tools.git
 cd de_tools
+```
