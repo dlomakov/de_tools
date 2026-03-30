@@ -9,6 +9,27 @@ This repository contains small but useful utilities designed to solve real-world
 
 ---
 
+## 🚀 Who is this for?
+
+This repo is useful if you:
+- work with Spark / Hive / Hadoop in production
+- debug data issues across environments
+- analyze storage efficiency and data layout
+- need quick tools without building full frameworks
+
+---
+
+## 📦 Tools Overview
+
+| Tool | Description |
+|------|------------|
+| Structure Comparator | Compare schemas of Hive tables and Parquet files |
+| Parquet Analyzer | Analyze Parquet file structure and storage efficiency |
+| YARN API Parser | Collect and store application resource usage metrics from YARN |
+| HDFS Size Estimator | Estimate directory size and replication impact |
+
+---
+
 ## 📦 Contents
 
 ### 1. Structure_comparator
