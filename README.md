@@ -1,75 +1,121 @@
-# de-tools
+# 🔧 de-tools
 
-Набор вспомогательных утилит и мини-фреймворков для Data Engineer при работе с Apache Spark и Hadoop.  
-Содержит инструменты для анализа структуры данных hive-таблиц, метаинформации parquet-файлов, мониторинга потребления ресурсов application'ами в YARN и объемов директорий HDFS.
+A collection of utility tools and mini-frameworks for Data Engineering tasks within the Apache Spark and Hadoop ecosystems.\
+This repository contains small but useful utilities designed to solve real-world problems:
+- Hive and parquet schema inconsistencies
+- Parquet file metadata analysis
+- YARN application resource usage monitoring
+- HDFS storage estimation
 
 ---
 
-## 📦 Состав
+## 🚀 Who is this for?
+
+This repo is useful if you:
+- work with Spark / Hive / Hadoop in production
+- debug data issues across environments
+- analyze storage efficiency and data layout
+- need quick tools without building full frameworks
+
+---
+
+## ⚙️ Tools Overview
+
+| Tool | Description |
+|------|------------|
+| Structure Comparator | Compare schemas of Hive tables and Parquet files |
+| Parquet Analyzer | Analyze Parquet file structure and storage efficiency |
+| YARN API Parser | Collect and store application resource usage metrics from YARN |
+| HDFS Size Estimator | Estimate directory size and replication impact |
+
+---
+
+## 📦 Contents
 
 ### 1. Structure_comparator
-Язык: Scala  
-Назначение: Сравнение структур двух таблиц в экосистеме Hadoop/Spark.  
+Language: Scala\
+Purpose: Compare the schema structures of two tables in a Hadoop/Spark environment.
 
-Возможности:
-- Поднимает SparkSession и сравнивает:
-  1. Схемы Hive-таблиц.
-  2. Поля партиционирования.
-  3. Схемы Parquet-файлов в хранилище.
-- Удобен для контроля совместимости и поиска расхождений между версиями таблиц.
+Features:
+- Launches a SparkSession and compares:
+  * Hive table schemas.
+  * Partitioning fields.
+  * Physical Parquet file schemas in storage.
+- Great for ensuring compatibility and identifying discrepancies between table versions.
+
+When to use:
+- after schema changes
+- during migrations
+- debugging broken pipelines
 
 ---
 
 ### 2. Parquet_analyzer
-Язык: Python (PyArrow, Pandas)  
-Назначение: Анализ метаинформации Parquet-файлов.  
+Language: Python (using PyArrow and Pandas)\
+Purpose: Analyze Parquet file metadata.
 
-Возможности:
-- Обрабатывает указанный Parquet-файл и выводит подробный анализ по каждому row group:
-  - Количество row group.
-  - Общий объём (байты).
-  - Средний размер строки (байты).
-  - Плотность хранения (density).
-  - Количество NULL значений.
-  - Кардинальность (уникальность значений).
-  - Поколоночный анализ в пределах row group:
-    - Эффективность компрессии.
-    - Тип данных и имя поля.
-    - Размер данных.
-    - Доля памяти в пределах row group.
+Features:
+- Processes a specified Parquet file and outputs detailed analysis per row group:
+  - Number of row groups.
+  - Total size (in bytes).
+  - Average row size (in bytes).
+  - Storage density.
+  - Count of NULL values.
+  - Cardinality (uniqueness of values).
+  - Column-level analysis within each row group:
+    - Compression efficiency.
+    - Data type and field name.
+    - Data size.
+    - Contribution to memory usage within the row group.
+
+Example use cases
+- storage optimization
+- performance tuning
+- debugging large datasets
 
 ---
 
 ### 3. Yarn_api_parser
-Язык: Python (Airflow, Requests)  
-Назначение: Сбор и загрузка статистики о выполнении приложений из YARN API.  
+Language: Python (integrating with Airflow and using requests)\
+Purpose: Collect and load application execution statistics from the YARN API.
 
-Возможности:
-- Airflow DAG, который:
-  1. Запрашивает YARN API через requests.
-  2. Парсит данные об application:
-     - Время работы.
-     - Интегральное потребление ресурсов:
-       - vcores-seconds
-       - memory-mb-seconds
-  3. Записывает данные в PostgreSQL:
-     - На stage слой (append-режим, все новые записи).
-     - В целевую таблицу (последняя версия по application через `row_number()`).
+Features - Arflow DAG that:
+1. Queries the YARN API using requests.
+2. Parses application metrics:
+    - Execution time.
+    - Cumulative resource usage:
+        - vcore-seconds.
+        - memory-MB-seconds.
+3. Inserts data into PostgreSQL:
+    - Into a staging area (append-only mode with all new records).
+    - Into a target table (latest record per application, using row_number() logic).
+  
+Use cases:
+- cluster monitoring
+- cost analysis
+- performance tracking
 
 ---
 
 ### 4. HDFS_size_estimator
-Язык: Python
-Назначение: Подсчет кол-ва файлов в HDFS и оценка размера директории.  
+Language: Python\
+Purpose: Estimate the number of files and directory size in HDFS.
 
-Возможности:
-- Сканирует указанный путь в HDFS.
-- Считает кол-во файлов и подпапок внутри директории.
-- Оценивает занятый объем контента, суммарный объем (с учетом фактора репликации).
-- Полезно для анализа занятого места.
+Features:
+- Scans a specified HDFS path.
+- Counts files and subdirectories within the path.
+- Estimates occupied space (factoring in replication).
+- Useful for analyzing storage usage.
+
+Example:
+```bash
+python hdfs_size_estimator.py /data/path
+```
 
 ---
 
-## 🚀 Установка
+## 🚀 Installation
 ```bash
 git clone https://github.com/dlomakov/de-tools.git
+cd de_tools
+```
